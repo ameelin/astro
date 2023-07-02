@@ -1,0 +1,26 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <button mat-icon-button>
+      <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
+    </button>
+    <h1>Astro Tinder</h1>
+  </mat-toolbar-row>
+</mat-toolbar>
+<mat-sidenav-container>
+  <mat-sidenav #sidenav opened="true" mode="side">
+    <mat-nav-list>
+      <a mat-list-item>Show Matches</a>
+      <a mat-list-item>Update Personal</a>
+      <a mat-list-item>Find Matches</a>
+      <a mat-list-item>Graph Matches</a>
+      <a mat-list-item>Contact Us</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div style="height:88vh;">
+      <router-outlet>
+      </router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
