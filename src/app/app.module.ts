@@ -5,6 +5,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
 import {MatButtonModule} from '@angular/material/button';
+import {MatCardModule} from '@angular/material/card';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 
@@ -15,12 +16,20 @@ import { environment } from 'src/environments/environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
+import { FindMatchesComponent } from './find-matches/find-matches.component';
+import { EditUserComponent } from './edit-user/edit-user.component';
+import { AboutComponent } from './about/about.component';
+import { ShowMatchesComponent } from './show-matches/show-matches.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    FindMatchesComponent,
+    EditUserComponent,
+    AboutComponent,
+    ShowMatchesComponent
   ],
   imports: [
     BrowserModule,
@@ -35,6 +44,7 @@ import { LoginComponent } from './login/login.component';
     FormsModule,
     MatInputModule,
     MatButtonModule,
+    MatCardModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
