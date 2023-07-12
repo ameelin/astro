@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { LoginComponent } from './login/login.component';
 import { MatSidenav } from '@angular/material/sidenav';
+import { Router,Event, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,26 +10,33 @@ import { MatSidenav } from '@angular/material/sidenav';
 })
 export class AppComponent {
   isLoggedIn = false;
+  currentRoute = '';
   @ViewChild('sidenav') sidenav!: MatSidenav;
   @ViewChild(LoginComponent) loginForm!: LoginComponent;
+
+  constructor(private router: Router) {}
+
+  ngOnInit() {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.currentRoute = event.url;
+      }
+    });
+  }
 
   toggleSidenav() {
     this.sidenav.toggle();
   }
 
   login() {
-    // Simulate login process
-    // You can replace this with your actual login logic
-    if (this.loginForm.username === 'john' && this.loginForm.password === 'doe') {
-      this.isLoggedIn = true;
-    } else {
-      alert('Invalid username or password');
-    }
+    this.isLoggedIn = true;
   }
 
   logout() {
-    // Simulate logout process
-    // You can replace this with your actual logout logic
     this.isLoggedIn = false;
+  }
+
+  isRegisterOrForgotPasswordRoute(): boolean {
+    return this.currentRoute === '/register' || this.currentRoute === '/forgot-password';
   }
 }

@@ -1,10 +1,50 @@
-<form class="login-form" (ngSubmit)="loginFormSubmit()">
-    <mat-form-field>
-      <input matInput placeholder="Username" [(ngModel)]="username" name="username" required>
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput type="password" placeholder="Password" [(ngModel)]="password" name="password" required>
-    </mat-form-field>
-    <button mat-raised-button color="primary" type="submit">Login</button>
-  </form>
-  
+<div class="container-fluid d-flex align-items-center justify-content-center" style="height: 100vh;">
+  <div class="col-4">
+    <div class="card shadow">
+      <div class="card-body">
+        <form>
+          <div class="mb-3">
+            <h4 class="text-dark text-muted">Login</h4>
+          </div>
+          <div class="mb-3">
+            <mat-form-field appearance="fill">
+              <mat-label>Email</mat-label>
+              <input matInput type="email" name="email" [(ngModel)]="email">
+            </mat-form-field>
+          </div>
+          <div class="mb-3">
+            <mat-form-field appearance="fill">
+              <mat-label>Password</mat-label>
+              <input matInput type="password" name="password" [(ngModel)]="password">
+            </mat-form-field>
+          </div>
+          <button mat-raised-button color="primary" (click)="login()">Login</button>
+          <div class="row">
+            <!-- <div class="col-md-6">
+              <a href="/register" style="text-decoration: none;">Need an Account? <span class="text-danger">Register</span></a>
+            </div>
+            <div class="col-md-6">
+              <a href="/forgot-password" class="text-dark" style="text-decoration: none;">Forgot Password?</a>
+            </div> -->
+            <div class="col-md-6">
+              <a routerLink="/register" style="text-decoration: none;">Need an Account? <span class="text-danger">Register</span></a>
+            </div>
+            <div class="col-md-6">
+              <a routerLink="/forgot-password" class="text-dark" style="text-decoration: none;">Forgot Password?</a>
+            </div>
+            
+          </div>
+          <div class="row mt-2">
+            <a (click)="signInWithGoogle()" style="text-decoration: none;cursor: pointer;">
+              <mat-card class="shadow text-center">
+                <mat-card-content>
+                  <img src="../../../assets/google-logo.png" alt="" height="24px" width="24px"> Sign In with Google
+                </mat-card-content>
+              </mat-card>
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

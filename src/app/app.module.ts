@@ -20,6 +20,9 @@ import { FindMatchesComponent } from './find-matches/find-matches.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
 import { AboutComponent } from './about/about.component';
 import { ShowMatchesComponent } from './show-matches/show-matches.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { RegisterComponent } from './register/register.component';
+import { VerifyEmailComponent } from './verify-email/verify-email.component';
 
 
 @NgModule({
@@ -29,7 +32,10 @@ import { ShowMatchesComponent } from './show-matches/show-matches.component';
     FindMatchesComponent,
     EditUserComponent,
     AboutComponent,
-    ShowMatchesComponent
+    ShowMatchesComponent,
+    ForgotPasswordComponent,
+    RegisterComponent,
+    VerifyEmailComponent
   ],
   imports: [
     BrowserModule,

@@ -1,22 +1,53 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
-  @Output() login: EventEmitter<void> = new EventEmitter<void>();
-  username: string = '';
-  password: string = '';
+export class LoginComponent implements OnInit {
 
-  loginFormSubmit() {
-    // Simulate login process
-    // You can replace this with your actual login logic
-    if (this.username === 'john' && this.password === 'doe') {
-      this.login.emit();
-    } else {
-      alert('Invalid username or password');
-    }
+  @Output() userLoggedIn: EventEmitter<void> = new EventEmitter<void>();
+  @Output() userLoggedOut: EventEmitter<void> = new EventEmitter<void>();
+
+
+  email : string = '';
+  password : string = '';
+
+  constructor(private auth : AuthService) { }
+
+  ngOnInit(): void {
   }
+
+  login() {
+
+    if(this.email == '') {
+      alert('Please enter email');
+      return;
+    }
+
+    if(this.password == '') {
+      alert('Please enter password');
+      return;
+    }
+
+    this.auth.login(this.email,this.password);
+    
+    this.email = '';
+    this.password = '';
+    this.userLoggedIn.emit();
+
+  }
+
+  logout() {
+    this.auth.logout();
+
+    this.userLoggedOut.emit();
+  }
+
+  signInWithGoogle() {
+    this.auth.googleSignIn();
+  }
+ 
 }
