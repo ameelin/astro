@@ -2,23 +2,29 @@
     <div class="col-4">
       <div class="card shadow">
         <div class="card-body">
-          <form>
+          <form (ngSubmit)="register()" #registerForm="ngForm">
             <div class="mb-3">
               <h4 class="text-dark text-muted">Register</h4>
             </div>
             <div class="mb-3">
               <mat-form-field appearance="fill">
                 <mat-label>Email</mat-label>
-                <input matInput type="email" name="email" [(ngModel)]="email">
+                <input matInput type="email" name="email" [(ngModel)]="email" required email>
+                <mat-error *ngIf="registerForm.controls['email']?.invalid && (registerForm.controls['email']?.dirty || registerForm.controls['email']?.touched)">
+                  Please enter a valid email address.
+                </mat-error>
               </mat-form-field>
             </div>
             <div class="mb-3">
               <mat-form-field appearance="fill">
                 <mat-label>Password</mat-label>
-                <input matInput type="password" name="password" [(ngModel)]="password">
+                <input matInput type="password" name="password" [(ngModel)]="password" required minlength="6">
+                <mat-error *ngIf="registerForm.controls['password']?.invalid && (registerForm.controls['password']?.dirty || registerForm.controls['password']?.touched)">
+                  Password must be at least 6 characters long.
+                </mat-error>
               </mat-form-field>
             </div>
-            <button mat-raised-button color="primary" (click)="register()">Register</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="registerForm.invalid">Register</button>
             <div class="row">
               <div class="col-md-6">
                 <a routerLink="/login" style="text-decoration: none;">Have an account? <span class="text-danger">Login</span></a>
