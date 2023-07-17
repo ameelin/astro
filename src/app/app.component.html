@@ -16,20 +16,17 @@
 <mat-sidenav-container class="container">
   <mat-sidenav #sidenav [opened]="isLoggedIn" mode="side" class="sidenav">
     <mat-nav-list>
-      <a mat-list-item>Show Matches</a>
-      <a mat-list-item>Find Matches</a>
-      <a mat-list-item>Edit Self</a>
-      <a mat-list-item>About</a>
+      <a routerLink="/show-matches" mat-list-item>Show Matches</a>
+      <a routerLink="/find-matches" mat-list-item>Find Matches</a>
+      <a routerLink="/edit-user" mat-list-item>Edit Self</a>
+      <a routerLink="/about" mat-list-item>About</a>
     </mat-nav-list>
   </mat-sidenav>
 
   <mat-sidenav-content class="content">
     <div class="main-content">
-      <!-- <app-login *ngIf="!isLoggedIn || currentRoute === 'register' || currentRoute === 'forgot-password'" (userLoggedIn)="login()" (userLoggedOut)="logout()"></app-login>
-      <router-outlet></router-outlet> -->
       <app-login *ngIf="!isLoggedIn && !isRegisterOrForgotPasswordRoute()" (userLoggedIn)="login()" (userLoggedOut)="logout()"></app-login>
-<router-outlet></router-outlet>
-
+      <router-outlet></router-outlet>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

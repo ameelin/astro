@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { GoogleAuthProvider, GithubAuthProvider, FacebookAuthProvider} from '@angular/fire/auth'
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Injectable({
   providedIn: 'root'
@@ -11,20 +12,28 @@ export class AuthService {
   constructor(private fireauth : AngularFireAuth, private router : Router) { }
 
   // login method
-  login(email : string, password : string) {
+  login1(email : string, password : string) {
     this.fireauth.signInWithEmailAndPassword(email,password).then( res => {
         localStorage.setItem('token','true');
-
-        if(res.user?.emailVerified == true) {
-          this.router.navigate(['/show-matches']);
-        } else {
-          this.router.navigate(['/verify-email']);
-        }
 
     }, err => {
         alert(err.message);
         this.router.navigate(['/login']);
     })
+  }
+
+  login(email: string, password: string): Observable<any> {
+    return new Observable((observer) => {
+      this.fireauth.signInWithEmailAndPassword(email, password)
+        .then((res) => {
+          localStorage.setItem('token', 'true');
+          observer.next(res);
+          observer.complete();
+        })
+        .catch((error) => {
+          observer.error(error);
+        });
+    });
   }
 
   // register method
