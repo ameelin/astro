@@ -22,28 +22,6 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  login1() {
-
-    if(this.email == '') {
-      alert('Please enter email');
-      return;
-    }
-
-    if(this.password == '') {
-      alert('Please enter password');
-      return;
-    }
-
-    this.auth.login(this.email,this.password);
-
-
-    
-    this.email = '';
-    this.password = '';
-    this.userLoggedIn.emit();
-  }
-
-
   login(){
     if(this.email == '') {
       alert('Please enter email');
