@@ -11,22 +11,10 @@ export class AuthService {
 
   constructor(private fireauth : AngularFireAuth, private router : Router) { }
 
-  // login method
-  login1(email : string, password : string) {
-    this.fireauth.signInWithEmailAndPassword(email,password).then( res => {
-        localStorage.setItem('token','true');
-
-    }, err => {
-        alert(err.message);
-        this.router.navigate(['/login']);
-    })
-  }
-
   login(email: string, password: string): Observable<any> {
     return new Observable((observer) => {
       this.fireauth.signInWithEmailAndPassword(email, password)
         .then((res) => {
-          localStorage.setItem('token', 'true');
           observer.next(res);
           observer.complete();
         })
@@ -51,7 +39,7 @@ export class AuthService {
   // sign out
   logout() {
     this.fireauth.signOut().then( () => {
-      localStorage.removeItem('token');
+      localStorage.clear();
       this.router.navigate(['/login']);
     }, err => {
       alert(err.message);

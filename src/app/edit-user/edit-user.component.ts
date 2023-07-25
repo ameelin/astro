@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '../shared/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-user',
@@ -6,25 +8,41 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./edit-user.component.css']
 })
 export class EditUserComponent implements OnInit {
+  userId: string = '';
   desiredUserName: string = '';
   birthStar: string = '';
   birthDate: string = '';
   longitude: string = '';
-  longitudeDirection: string = ''; // Add this field
+  longitudeDirection: string = ''; 
+  modifiedDate : string = '';
 
-  constructor() {}
+  constructor(private userService: UserService, private router : Router) {}
 
   ngOnInit(): void {}
 
   onSubmit(): void {
     if (this.isFormValid()) {
-      // Submit the form data to your desired logic or API
-      console.log('Form submitted successfully!');
-      console.log('Desired User Name:', this.desiredUserName);
-      console.log('Birth Star:', this.birthStar);
-      console.log('Birth Date:', this.birthDate);
-      console.log('Longitude:', this.longitude);
-      console.log('Longitude Direction:', this.longitudeDirection); // Log the longitude direction
+      this.userId = localStorage.getItem("userId") ?? '';
+      const user = {
+        userId: this.userId,
+        desiredUserName: this.desiredUserName,
+        birthStar: this.birthStar,
+        birthDate: this.birthDate,
+        longitude: this.longitude,
+        longitudeDirection: this.longitudeDirection,
+        modifiedDate: new Date().toLocaleDateString('en-US'),
+        modifiedBy: this.userId
+      };
+
+      //Now update user data
+      this.userService.editUser(user).subscribe(
+        () => {
+          console.log(`User with ID ${user.userId} updated successfully!`);
+        },
+        (error) => {
+          console.log('Error updating user:', error);
+        }
+      );
     } else {
       console.log('Please fill in all the required fields with valid data.');
     }

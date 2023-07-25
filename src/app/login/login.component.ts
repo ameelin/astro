@@ -34,8 +34,16 @@ export class LoginComponent implements OnInit {
     }
 
     this.auth.login(this.email, this.password).subscribe(
-      () => {
-        localStorage.setItem('token','true');
+      (res) => {
+        if (res.user) {
+          // If the login is successful and res.user is not null,
+          // obtain the user's token using res.user.getIdToken() method
+          res.user.getIdToken().then((token: string) => {
+            // Store the token in localStorage
+            localStorage.setItem('token', token);
+            localStorage.setItem('userId', this.email);
+          });
+        }
         this.userService.checkUserExists(this.email).subscribe(
           (userExists) => {
             if (userExists) {
