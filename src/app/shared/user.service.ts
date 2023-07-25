@@ -63,9 +63,5 @@ export class UserService {
       })
     );
   }
-
-  update(userId: string,user: any){
-
-  }
   
 }
