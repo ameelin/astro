@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../shared/user.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-user',
@@ -16,9 +16,23 @@ export class EditUserComponent implements OnInit {
   longitudeDirection: string = ''; 
   modifiedDate : string = '';
 
-  constructor(private userService: UserService, private router : Router) {}
+  constructor(private userService: UserService, private router : ActivatedRoute) {}
 
-  ngOnInit(): void {}
+  ngOnInit() {
+    if(this.userService.isUserLoggedIn()){
+      try {
+        const userId = localStorage.getItem("userId") ?? '';
+        this.loadUserData(userId);
+        console.log('User data loaded successfully');
+      } catch (error) {
+        console.error('Error loading user data:', error);
+      }
+    }
+    
+    
+    
+  }
+
 
   onSubmit(): void {
     if (this.isFormValid()) {
@@ -50,21 +64,21 @@ export class EditUserComponent implements OnInit {
 
   isFormValid(): boolean {
     // Check that desiredUserName and birthStar have values
-    if (this.desiredUserName.trim() === '' || this.birthStar.trim() === '') {
+    if (this.desiredUserName && this.desiredUserName.trim() === '' || this.birthStar.trim() === '') {
       return false;
     }
   
     // Check desiredUserName length is between 6 and 8 characters
-    if (this.desiredUserName.trim().length < 6 || this.desiredUserName.trim().length > 8) {
+    if (this.desiredUserName && this.desiredUserName.trim().length < 6 || this.desiredUserName.trim().length > 8) {
       return false;
     }
   
     // Additional validation for birthDate and longitude if they are filled
-    if (this.birthDate.trim() !== '' && !/^\d{2}\/\d{2}\/\d{4}$/.test(this.birthDate)) {
+    if (this.birthDate && this.birthDate.trim() !== '' && !/^\d{2}\/\d{2}\/\d{4}$/.test(this.birthDate)) {
       return false;
     }
   
-    if (this.longitude.trim() !== '' && !/^(\d{1,3}\.\d{2})$/.test(this.longitude)) {
+    if (this.longitude && this.longitude.trim() !== '' && !/^(\d{1,3}\.\d{2})$/.test(this.longitude)) {
       return false;
     }
   
@@ -75,5 +89,23 @@ export class EditUserComponent implements OnInit {
   
     return true;
   }
+
+  loadUserData(userId: string ): void {
+    this.userService.getUserData(userId).subscribe(
+    (userData) => {
+        //alert(userId)
+        // Update the form fields with the user data
+        this.desiredUserName = userData?.desiredUserName ?? '';
+        this.birthStar = userData?.birthStar ?? '';
+        this.birthDate = userData?.birthDate ?? '';
+        this.longitude = userData?.longitude ?? '';
+        this.longitudeDirection = userData?.longitudeDirection ?? '';
+      },
+      (error) => {
+        console.error('Error fetching user data:', error);
+      }
+    );
+  }
+  
   
 }

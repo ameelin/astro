@@ -2,6 +2,8 @@ import { Component, ViewChild } from '@angular/core';
 import { LoginComponent } from './login/login.component';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Router,Event, NavigationEnd } from '@angular/router';
+import { AuthService } from './shared/auth.service';
+import { UserService } from './shared/user.service';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +16,7 @@ export class AppComponent {
   @ViewChild('sidenav') sidenav!: MatSidenav;
   @ViewChild(LoginComponent) loginForm!: LoginComponent;
 
-  constructor(private router: Router) {}
+  constructor(private auth : AuthService, private userService: UserService, private router: Router) {}
 
   ngOnInit() {
     this.router.events.subscribe((event) => {
@@ -30,10 +32,15 @@ export class AppComponent {
 
   login() {
     this.isLoggedIn = true;
+    this.userService.setUserLoggedIn(true);
   }
 
   logout() {
     this.isLoggedIn = false;
+    this.userService.setUserLoggedIn(false);
+    this.auth.logout();
+    localStorage.removeItem("userId");
+    localStorage.clear();
   }
 
   isRegisterOrForgotPasswordRoute(): boolean {

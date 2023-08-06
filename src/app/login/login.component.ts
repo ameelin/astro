@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit {
   constructor(private auth : AuthService, private userService: UserService, private router : Router) { }
 
   ngOnInit(): void {
+
   }
 
   login(){
@@ -39,6 +40,8 @@ export class LoginComponent implements OnInit {
           // If the login is successful and res.user is not null,
           // obtain the user's token using res.user.getIdToken() method
           res.user.getIdToken().then((token: string) => {
+            localStorage.removeItem("userId");
+            localStorage.clear();
             // Store the token in localStorage
             localStorage.setItem('token', token);
             localStorage.setItem('userId', this.email);
@@ -54,6 +57,7 @@ export class LoginComponent implements OnInit {
                     this.navigateTo('/find-matches');
                   }
                   else{
+                    localStorage.setItem('userId', this.email);
                     this.navigateTo('/edit-user');
                   }
                 },
@@ -69,6 +73,7 @@ export class LoginComponent implements OnInit {
               this.userService.addUser(user).subscribe(
                 () => {
                   // Logic after adding the user
+                  localStorage.setItem('userId', this.email);
                   this.navigateTo('/edit-user');
                 },
                 (error) => {
@@ -93,7 +98,9 @@ export class LoginComponent implements OnInit {
 
   logout() {
     this.auth.logout();
-
+    localStorage.removeItem("userId");
+    localStorage.clear();
+    alert("logout:"+localStorage.getItem("userId"));
     this.userLoggedOut.emit();
   }
 

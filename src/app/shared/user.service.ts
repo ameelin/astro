@@ -9,9 +9,27 @@ import 'firebase/compat/firestore';
   providedIn: 'root'
 })
 export class UserService {
-
+  
   constructor(private firestore: AngularFirestore) { }
 
+  userLoggedIn = false;
+
+  getUserData(userId: string): Observable<any> {
+    if(userId==''){
+      throw new Error('userId is empty');
+    }
+    // Find the document ID based on the userId
+    return this.findDocIdByUserId(userId).pipe(
+      switchMap((docId) => {
+        if (docId) {
+          // Fetch the user data from the document with the provided docId
+          return this.firestore.collection('users').doc(docId).valueChanges();
+        } else {
+          throw new Error('Document with the provided userId not found.');
+        }
+      })
+    );
+  }
 
   addUser(user: any): Observable<any> {
     return from(this.firestore.collection('users').add(user));
@@ -56,12 +74,31 @@ export class UserService {
   }
 
   checkBirthStarExists(userId: string): Observable<boolean> {
-    return this.firestore.collection('users').doc(userId).get().pipe(
-      map((doc) => {
-        const data = doc.data() as { birthStar: any }; // Type assertion to specify the expected data shape
-        return !!data && 'birthStar' in data && data.birthStar !== null;
-      })
+    const usersRef = this.firestore.collection('users');
+    return from(
+      usersRef
+        .ref.where('userId', '==', userId)
+        .get()
+        .then((querySnapshot) => {
+          if (!querySnapshot.empty) {
+            const userData = querySnapshot.docs[0].data() as { birthStar?: any };
+            return !!userData?.birthStar;
+          }
+          return false;
+        })
     );
   }
+
+  isUserLoggedIn(){
+    if(this.userLoggedIn){
+      return true;
+    }
+   return  false
+  }
+
+  setUserLoggedIn(val:boolean){
+    this.userLoggedIn = val;
+  }
+  
   
 }
